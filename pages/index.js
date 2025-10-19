@@ -11,16 +11,33 @@ function HomePage(props) {
     </ul>
   );
 }
-export async function getStaticProps() {
-  console.log("re-generating")
+export async function getStaticProps(context) {
+  console.log("re-generating");
   const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
   const jsonData = await fs.readFile(filePath);
   const data = JSON.parse(jsonData);
+
+  if (!data) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+    };
+  }
+
+  if (data.products.length === 0) {
+    return { notFound: true };
+  }
+
   return {
     props: {
       products: data.products,
     },
-    revalidate: 10
+    revalidate: 10,
+    // notFound:true,
+    // redirect: {
+    //  destination: "/",
+    // },
   };
 }
 
