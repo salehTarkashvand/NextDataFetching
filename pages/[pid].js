@@ -5,6 +5,10 @@ import { Fragment } from "react/jsx-runtime";
 
 export default function ProductDetailPage(props) {
   const { loadedProduct } = props;
+
+  if(!loadedProduct){
+    return <p>loading...</p>
+  }
   return (
     <Fragment>
       <h1>{loadedProduct.title}</h1>
@@ -33,9 +37,7 @@ export async function getStaticPaths() {
   return {
     paths: [
       { params: { pid: "p1" } },
-      { params: { pid: "p2" } },
-      { params: { pid: "p3" } },
     ],
-    fallback: false,
+    fallback: true,
   };
 }
